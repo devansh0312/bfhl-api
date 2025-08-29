@@ -50,8 +50,8 @@ app.post('/bfhl', (req, res) => {
     const responsePayload = {
       is_success: true,
       // ↓↓↓ IMPORTANT: REPLACE THESE VALUES WITH YOUR OWN ↓↓↓
-      user_id: "dev_agr_03122003", 
-      email: "devanshagrawal@gmail.com",
+      user_id: "devansh0312", 
+      email: "devansha625@gmail.com",
       roll_number: "EFGH456",
       
       odd_numbers,

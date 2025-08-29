@@ -8,9 +8,17 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.1.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devansh0312/bfhl-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/devansh0312/bfhl-api/issues"
+  },
+  "homepage": "https://github.com/devansh0312/bfhl-api#readme",
+  "description": ""
 }
