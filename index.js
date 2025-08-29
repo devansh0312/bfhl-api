@@ -1,13 +1,20 @@
+// File: bfhl-api/index.js
+
 const express = require('express');
 const cors = require('cors');
 
 const app = express();
 
-app.use(express.json());
+// --- CRITICAL SECTION ---
+// These must be included and in this order.
 app.use(cors());
+app.use(express.json());
+// ------------------------
 
 const PORT = process.env.PORT || 3001;
 
+// --- VERIFY THIS ROUTE NAME ---
+// It must be exactly app.post('/bfhl', ...)
 app.post('/bfhl', (req, res) => {
   try {
     const { data } = req.body;
@@ -24,22 +31,23 @@ app.post('/bfhl', (req, res) => {
     let alphaChars = '';
 
     for (const item of data) {
-      if (String(item).trim() === '') continue;
+        const strItem = String(item).trim();
+        if (strItem === '') continue;
 
-      if (!isNaN(Number(item)) && isFinite(Number(item))) {
-        const num = Number(item);
-        if (num % 2 === 0) {
-          even_numbers.push(String(item));
+        if (!isNaN(Number(strItem)) && isFinite(Number(strItem))) {
+            const num = Number(strItem);
+            if (num % 2 === 0) {
+                even_numbers.push(String(num));
+            } else {
+                odd_numbers.push(String(num));
+            }
+            sum += num;
+        } else if (/^[a-zA-Z]+$/.test(strItem)) {
+            alphabets.push(strItem.toUpperCase());
+            alphaChars += strItem;
         } else {
-          odd_numbers.push(String(item));
+            special_characters.push(strItem);
         }
-        sum += num;
-      } else if (/^[a-zA-Z]+$/.test(item)) {
-        alphabets.push(item.toUpperCase());
-        alphaChars += item;
-      } else {
-        special_characters.push(String(item));
-      }
     }
 
     const reversedAlpha = alphaChars.split('').reverse().join('');
@@ -49,11 +57,12 @@ app.post('/bfhl', (req, res) => {
 
     const responsePayload = {
       is_success: true,
-      // ↓↓↓ IMPORTANT: REPLACE THESE VALUES WITH YOUR OWN ↓↓↓
-      user_id: "devansh0312", 
+      // ↓↓↓ IMPORTANT: MAKE SURE YOU HAVE REPLACED THESE! ↓↓↓
+    user_id: "devansh0312", 
       email: "devansha625@gmail.com",
       roll_number: "EFGH456",
       
+      // ↑↑↑ --------------------------------------------- ↑↑↑
       odd_numbers,
       even_numbers,
       alphabets,
@@ -65,10 +74,12 @@ app.post('/bfhl', (req, res) => {
     return res.status(200).json(responsePayload);
 
   } catch (error) {
+    console.error(error); // Log the error for debugging on Vercel
     return res.status(500).json({ is_success: false, error: error.message });
   }
 });
 
+// This makes sure the server starts
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
